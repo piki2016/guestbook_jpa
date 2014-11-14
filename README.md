@@ -9,8 +9,6 @@ SQL 스크립트 : https://github.com/urstory/guestbook2/blob/master/src/main/re
 
 MAVEN 프로젝트입니다.
 
-되되록 Annotation을 이용하여 구현하도록 하였습니다. 
-==========
 
 적용된 기술.
 
