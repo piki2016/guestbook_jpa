@@ -2,3 +2,4 @@
 /target/
 /.classpath
 /.project
+/guestbook_jpa/
