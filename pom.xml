@@ -326,8 +326,8 @@
 	</dependencies>
 	
 	<build>
-		<finalName>holyeye</finalName>
-		<!-- 
+		<finalName>guestbook_jpa</finalName>
+ 
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -337,9 +337,6 @@
 				<excludes>
 					<exclude>**/*.java</exclude>
 				</excludes>
-			</resource>
-			<resource>
-				<directory>src/main/resources-${env}</directory>
 			</resource>
 		</resources>
 		<testResources>
@@ -353,7 +350,6 @@
 				</excludes>
 			</testResource>
 		</testResources>
-		 -->
 		
 		<plugins>
 			<plugin>
