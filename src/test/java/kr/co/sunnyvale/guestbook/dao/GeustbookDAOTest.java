@@ -16,10 +16,27 @@ import org.springframework.transaction.annotation.Transactional;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration({"classpath:/spring/dbpool-context.xml","classpath:/spring/root-context.xml"})
 @TransactionConfiguration(defaultRollback=true)
-public class ConfigInitTest {
+public class GeustbookDAOTest {
+	
+	@Autowired
+	UserRepository userRepository;
 	
 	@Test
-	public void test() throws Exception{
-		
+	@Transactional
+	public void saveUser() throws Exception{
+		User user = new User("urstory");
+		user.setAdmin(1);
+		user.setEmail("urstory@gmail.com");
+		user.setName("김성박");
+		user.setPasswd("1234");
+		user.setRegdate(new Date(System.currentTimeMillis()));
+		userRepository.save(user);
 	}
+	
+	@Test
+	public void findByUserId() throws Exception{
+		User user = userRepository.findByUserId("urstory");
+		System.out.println(user);
+	}	
+
 }

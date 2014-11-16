@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Pattern;
 
 import lombok.extern.slf4j.Slf4j;
@@ -16,13 +18,15 @@ import org.hibernate.validator.constraints.NotBlank;
 
 
 @Slf4j	
-@Entity(name="GUESTBOOK_USER")
+@Entity
+@Table(name="GUESTBOOK_USER", uniqueConstraints=@UniqueConstraint(columnNames="userId"))
 public class User{
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "USER_ID_SEQ")
     @SequenceGenerator(name = "USER_ID_SEQ", sequenceName = "user_id_seq", allocationSize=1)    
     private Long id;
 	
+
     private String userId;
     
     @NotBlank
@@ -106,21 +110,17 @@ public class User{
 		this.userId = userId;
 	}
 
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", userId=" + userId + ", name=" + name
+				+ ", passwd=" + passwd + ", regdate=" + regdate + ", admin="
+				+ admin + ", email=" + email + "]";
+	}
+
 	
 
 	
 }
-
-/*
- create table guestbook_user(
-user_id varchar2(10),
-user_passwd varchar2(500),
-user_name varchar2(100),
-email varchar2(255),
-admin_flag number(1),
-regdate date );
-
-*/
 
 /*
 
