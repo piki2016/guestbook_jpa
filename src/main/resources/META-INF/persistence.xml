@@ -8,5 +8,16 @@
     <persistence-unit name="default" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
     </persistence-unit>
-
+    
+	<persistence-unit name="jpa.ddl" >
+		<!-- <provider>org.hibernate.ejb.HibernatePersistence</provider> -->
+		<shared-cache-mode>ENABLE_SELECTIVE</shared-cache-mode>
+		<properties>
+			<property name="hibernate.dialect" value="org.hibernate.dialect.Oracle10gDialect" />
+			<property name="hibernate.connection.url" value="oracle:thin:@127.0.0.1:1521:XE" />
+			<property name="hibernate.connection.driver_class" value="oracle.jdbc.driver.OracleDriver" />
+			<property name="hibernate.connection.username" value="hr" />
+			<property name="hibernate.connection.password" value="hr" />
+		</properties>
+	</persistence-unit>
 </persistence>

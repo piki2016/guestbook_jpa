@@ -21,6 +21,7 @@ public class Image{
 	private String realPath; //  실제 디스크 저장 경로
 	private long fileLength;
 	private String contentType;
+	private java.sql.Date regdate;
 
 	@ManyToOne
 	private Guestbook guestbook;
@@ -78,6 +79,14 @@ public class Image{
 	}
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
+	}
+
+	public java.sql.Date getRegdate() {
+		return regdate;
+	}
+
+	public void setRegdate(java.sql.Date regdate) {
+		this.regdate = regdate;
 	}
 	
 	

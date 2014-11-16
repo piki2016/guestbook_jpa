@@ -2,6 +2,7 @@ package kr.co.sunnyvale.guestbook.dao;
 
 import java.sql.Date;
 
+import kr.co.sunnyvale.guestbook.domain.QUser;
 import kr.co.sunnyvale.guestbook.domain.User;
 import kr.co.sunnyvale.guestbook.repository.UserRepository;
 
@@ -38,5 +39,12 @@ public class GeustbookDAOTest {
 		User user = userRepository.findByUserId("urstory");
 		System.out.println(user);
 	}	
+	
+	@Test
+	public void QueryDSLFindUserId() throws Exception{
+		QUser u = QUser.user;
+		User user = userRepository.findOne(u.userId.eq("urstory"));
+		System.out.println(user);
+	}
 
 }
