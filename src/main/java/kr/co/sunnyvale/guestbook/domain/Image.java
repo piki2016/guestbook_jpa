@@ -5,13 +5,15 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.SequenceGenerator;
 
 @SuppressWarnings("serial")
 @Entity
 public class Image{
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "IMAGE_ID_SEQ")
+    @SequenceGenerator(name = "IMAGE_ID_SEQ", sequenceName = "image_id_seq", allocationSize=1)   
     private Long id;
 	
 	private String fileName; // 원본 파일명

@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.validation.constraints.Pattern;
 
 import lombok.extern.slf4j.Slf4j;
@@ -15,15 +16,14 @@ import org.hibernate.validator.constraints.NotBlank;
 
 
 @Slf4j	
-@Entity
+@Entity(name="GUESTBOOK_USER")
 public class User{
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private String id;
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "USER_ID_SEQ")
+    @SequenceGenerator(name = "USER_ID_SEQ", sequenceName = "user_id_seq", allocationSize=1)    
+    private Long id;
 	
-    @NotBlank
-    @Length(max = 10)
-	private String userId;
+    private String userId;
     
     @NotBlank
     @Length(max = 100)   
@@ -40,8 +40,8 @@ public class User{
 		
 	}
 	
-	public User(String id){
-		this.id = id;
+	public User(String userId){
+		this.userId = userId;
 	}
     
 	//, message="org.hibernate.validator.constraints.Pattern.message"
@@ -50,14 +50,6 @@ public class User{
     @Pattern(regexp="^[_0-9a-zA-Z-]+@[0-9a-zA-Z]+(.[_0-9a-zA-Z-]+)*$")
     private String email;
  
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -98,12 +90,20 @@ public class User{
 		this.email = email;
 	}
 
-	public String getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(String id) {
+	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getUserId() {
+		return userId;
+	}
+
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	

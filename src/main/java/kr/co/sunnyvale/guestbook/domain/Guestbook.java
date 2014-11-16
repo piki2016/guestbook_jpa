@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -17,7 +18,8 @@ public class Guestbook {
 	
 
     @Id
-    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "GUESTBOOK_ID_SEQ")
+    @SequenceGenerator(name = "GUESTBOOK_ID_SEQ", sequenceName = "guestbook_id_seq", allocationSize=1)   
     private Long id;
     
 	private String name;
