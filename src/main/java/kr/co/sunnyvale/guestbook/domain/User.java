@@ -3,6 +3,9 @@ package kr.co.sunnyvale.guestbook.domain;
 import java.sql.Date;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.validation.constraints.Pattern;
 
 import lombok.extern.slf4j.Slf4j;
@@ -13,7 +16,10 @@ import org.hibernate.validator.constraints.NotBlank;
 
 @Slf4j	
 @Entity
-public class User extends BaseDateEntity<String>{
+public class User{
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private String id;
 	
     @NotBlank
     @Length(max = 10)
@@ -35,7 +41,7 @@ public class User extends BaseDateEntity<String>{
 	}
 	
 	public User(String id){
-		super.setId(id);
+		this.id = id;
 	}
     
 	//, message="org.hibernate.validator.constraints.Pattern.message"
@@ -92,6 +98,15 @@ public class User extends BaseDateEntity<String>{
 		this.email = email;
 	}
 
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
+
+	
 
 	
 }

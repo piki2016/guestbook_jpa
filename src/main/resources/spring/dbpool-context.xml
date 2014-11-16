@@ -54,11 +54,13 @@
 		</property>
 	</bean>
 
+	<!-- 
     <jdbc:initialize-database data-source="dataSource">
     	<jdbc:script location="classpath:/spring/start_ddl.sql" />
     	<jdbc:script location="classpath:/spring/start_data.sql" />
     </jdbc:initialize-database>
- 
+  	-->
+  	
     <bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>

@@ -4,13 +4,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 @SuppressWarnings("serial")
 @Entity
-public class Guestbook extends BaseDateEntity<Long>{
+public class Guestbook {
+	
+
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
+    
 	private String name;
 	
     @NotBlank
@@ -24,6 +33,20 @@ public class Guestbook extends BaseDateEntity<Long>{
 		images.add(image);
 	}	
 	
+	
+	
+	public Long getId() {
+		return id;
+	}
+
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+
 	public String getName() {
 		return name;
 	}

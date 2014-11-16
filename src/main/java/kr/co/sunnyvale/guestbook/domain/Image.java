@@ -1,7 +1,5 @@
 package kr.co.sunnyvale.guestbook.domain;
 
-import java.sql.Date;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -10,21 +8,35 @@ import javax.persistence.ManyToOne;
 
 @SuppressWarnings("serial")
 @Entity
-public class Image extends BaseDateEntity<Long>{
-	@ManyToOne
-	private Guestbook guestbook;
+public class Image{
 
+    @Id
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
+    private Long id;
 	
 	private String fileName; // 원본 파일명
 	private String saveFileName; // save파일 이름
 	private String realPath; //  실제 디스크 저장 경로
 	private long fileLength;
 	private String contentType;
-	
+
+	@ManyToOne
+	private Guestbook guestbook;
+
 	public Image(){
 
 	}
 	
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
 	public Image(Guestbook guestbook){
 		setGuestbook(guestbook);		
 	}
