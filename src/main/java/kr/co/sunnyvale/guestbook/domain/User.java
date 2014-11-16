@@ -37,8 +37,7 @@ public class User{
     @Length(max = 255)  
     @Pattern(regexp="^[_0-9a-zA-Z-]+@[0-9a-zA-Z]+(.[_0-9a-zA-Z-]+)*$")
     private String email;
-
-
+ 
     
 	public Long getId() {
 		return id;
@@ -95,7 +94,8 @@ public class User{
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
+
 	
 }
 
