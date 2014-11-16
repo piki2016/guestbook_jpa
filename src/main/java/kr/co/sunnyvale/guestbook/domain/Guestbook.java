@@ -4,20 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 @SuppressWarnings("serial")
 @Entity
-public class Guestbook{
+public class Guestbook extends BaseDateEntity<Long>{
 	private String name;
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
 	
     @NotBlank
 	private String content;
@@ -25,16 +19,6 @@ public class Guestbook{
 	
 	@OneToMany(mappedBy="guestbook")
 	List<Image> images = new ArrayList<Image>();
-
-	
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public void addImage(Image image) {
 		images.add(image);

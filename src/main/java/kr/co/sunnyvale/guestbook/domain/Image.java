@@ -10,20 +10,16 @@ import javax.persistence.ManyToOne;
 
 @SuppressWarnings("serial")
 @Entity
-public class Image{
+public class Image extends BaseDateEntity<Long>{
 	@ManyToOne
 	private Guestbook guestbook;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
 	
 	private String fileName; // 원본 파일명
 	private String saveFileName; // save파일 이름
 	private String realPath; //  실제 디스크 저장 경로
 	private long fileLength;
 	private String contentType;
-	private Date regdate;
 	
 	public Image(){
 
@@ -31,15 +27,6 @@ public class Image{
 	
 	public Image(Guestbook guestbook){
 		setGuestbook(guestbook);		
-	}
-	
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public Guestbook getGuestbook() {
@@ -78,13 +65,6 @@ public class Image{
 	public void setContentType(String contentType) {
 		this.contentType = contentType;
 	}
-	public Date getRegdate() {
-		return regdate;
-	}
-	public void setRegdate(Date regdate) {
-		this.regdate = regdate;
-	}
-
 	
 	
 }

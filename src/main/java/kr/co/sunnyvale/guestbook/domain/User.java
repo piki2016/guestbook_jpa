@@ -3,19 +3,17 @@ package kr.co.sunnyvale.guestbook.domain;
 import java.sql.Date;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
 import javax.validation.constraints.Pattern;
+
+import lombok.extern.slf4j.Slf4j;
+
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
-@SuppressWarnings("serial")
+
+@Slf4j	
 @Entity
-public class User{
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+public class User extends BaseDateEntity<String>{
 	
     @NotBlank
     @Length(max = 10)
@@ -31,6 +29,14 @@ public class User{
 	private Date regdate;
 	
 	private int admin;
+	
+	public User(){
+		
+	}
+	
+	public User(String id){
+		super.setId(id);
+	}
     
 	//, message="org.hibernate.validator.constraints.Pattern.message"
     @NotBlank
@@ -38,15 +44,6 @@ public class User{
     @Pattern(regexp="^[_0-9a-zA-Z-]+@[0-9a-zA-Z]+(.[_0-9a-zA-Z-]+)*$")
     private String email;
  
-    
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public String getUserId() {
 		return userId;
 	}
