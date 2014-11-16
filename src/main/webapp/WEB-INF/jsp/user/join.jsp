@@ -11,10 +11,10 @@
 <table>
 <tr>
 	<td> 아이디</td>
-	<td> <form:input  path="id" /> </td>
+	<td> <form:input  path="userId" /> </td>
 </tr>
 <tr>
-	<td colspan="2"><form:errors path="id"/></td>
+	<td colspan="2"><form:errors path="userId"/></td>
 </tr>
 <tr>
 	<td> 이름</td>

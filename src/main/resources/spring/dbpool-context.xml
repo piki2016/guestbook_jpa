@@ -17,7 +17,7 @@
 	http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
 	http://www.springframework.org/schema/data/jpa
 	http://www.springframework.org/schema/data/jpa/spring-jpa.xsd">
-	<tx:annotation-driven />
+	<tx:annotation-driven transaction-manager="transactionManager" />
 	<context:component-scan base-package="kr.co.sunnyvale" />
 	<jpa:repositories base-package="kr.co.sunnyvale" />	
 	<jpa:repositories base-package="kr.co.sunnyvale" />	
@@ -65,6 +65,7 @@
         <property name="entityManagerFactory" ref="entityManagerFactory" />
     </bean>
  
+ 	<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
  
     <bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
 	    <property name="dataSource" ref="dataSource"/>
@@ -77,6 +78,7 @@
             	<prop key="hibernate.ejb.naming_strategy">org.hibernate.cfg.ImprovedNamingStrategy</prop>
         	</props>
     	</property>
-</bean>
+    	<property name="jpaDialect" ref="jpaDialect"/>
+	</bean>
 
 </beans>

@@ -3,7 +3,9 @@ package kr.co.sunnyvale.guestbook.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -30,11 +32,17 @@ public class Guestbook {
 	private String content;
 	private java.sql.Date regdate;
 	
-	@OneToMany(mappedBy="guestbook")
-	List<Image> images = new ArrayList<Image>();
+	@OneToMany(fetch = FetchType.LAZY, cascade ={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "guestbook")
+	List<Image> images;
 
 	public void addImage(Image image) {
+		if(image == null)
+			return;
+		if(images == null){
+			images = new ArrayList<Image>();
+		}
 		images.add(image);
+		image.setGuestbook(this);
 	}	
 	
 	
@@ -80,6 +88,16 @@ public class Guestbook {
 	}
 
 
+
+	@Override
+	public String toString() {
+		return "Guestbook [id=" + id + ", name=" + name + ", content="
+				+ content + ", regdate=" + regdate + "]";
+	}
+
+
+
+	
 }
 
 /*

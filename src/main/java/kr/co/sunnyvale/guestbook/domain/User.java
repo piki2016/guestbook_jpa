@@ -41,13 +41,14 @@ public class User{
 	private int admin;
 	
 	public User(){
-		
+		setRegdate(new java.sql.Date(System.currentTimeMillis()));
 	}
 	
 	public User(String userId){
-		this.userId = userId;
+		this();
+		setUserId(userId);
 	}
-    
+	
 	//, message="org.hibernate.validator.constraints.Pattern.message"
     @NotBlank
     @Length(max = 255)  
@@ -117,7 +118,6 @@ public class User{
 				+ admin + ", email=" + email + "]";
 	}
 
-	
 
 	
 }

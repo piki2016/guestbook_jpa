@@ -1,11 +1,15 @@
 package kr.co.sunnyvale.guestbook.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
+
+import org.hibernate.validator.constraints.Length;
 
 @SuppressWarnings("serial")
 @Entity
@@ -18,12 +22,14 @@ public class Image{
 	
 	private String fileName; // 원본 파일명
 	private String saveFileName; // save파일 이름
+	
+	@Length(max=500)
 	private String realPath; //  실제 디스크 저장 경로
 	private long fileLength;
 	private String contentType;
 	private java.sql.Date regdate;
 
-	@ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
 	private Guestbook guestbook;
 
 	public Image(){
@@ -88,8 +94,16 @@ public class Image{
 	public void setRegdate(java.sql.Date regdate) {
 		this.regdate = regdate;
 	}
-	
-	
+
+	@Override
+	public String toString() {
+		return "Image [id=" + id + ", fileName=" + fileName + ", saveFileName="
+				+ saveFileName + ", realPath=" + realPath + ", fileLength="
+				+ fileLength + ", contentType=" + contentType + ", regdate="
+				+ regdate + "]";
+	}
+
+
 }
 
 /*

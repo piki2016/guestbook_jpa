@@ -25,12 +25,13 @@ public class GeustbookDAOTest {
 	@Test
 	@Transactional
 	public void saveUser() throws Exception{
-		User user = new User("urstory");
+		User user = new User();
+		user.setUserId("urstory");
 		user.setAdmin(1);
 		user.setEmail("urstory@gmail.com");
 		user.setName("김성박");
 		user.setPasswd("1234");
-		user.setRegdate(new Date(System.currentTimeMillis()));
+		//user.setRegdate(new Date(System.currentTimeMillis()));
 		userRepository.save(user);
 	}
 	

@@ -1,4 +1,4 @@
-package kr.co.sunnyvale.commons.util;
+package kr.co.sunnyvale.commons.hibernate;
 
 
 import java.io.FileNotFoundException;

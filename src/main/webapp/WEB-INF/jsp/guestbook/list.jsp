@@ -32,7 +32,7 @@ ${guestbook.content }
 </pre>	<br>
 등록일 : ${guestbook.regdate }<br>
 	<c:forEach var="image" items="${guestbook.images }" varStatus="status2">
-		<img src="/guestbook/download/${image.seq}" width="50%" height="50%"><br>
+		<img src="/guestbook/download/${image.id}" width="50%" height="50%"><br>
 	</c:forEach>
 
 <hr>
