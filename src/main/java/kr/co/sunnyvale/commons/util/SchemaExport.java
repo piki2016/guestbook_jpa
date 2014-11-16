@@ -17,7 +17,7 @@ public class SchemaExport {
 
 		boolean drop = true;
 		boolean create = true;
-		String outFile = "./target/auto.sql";
+		String outFile = "./target/ddl.sql";
 		String delimiter = ";";
 		String unitName = "jpa.ddl";
 
