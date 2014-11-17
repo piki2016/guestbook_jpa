@@ -18,7 +18,16 @@ oracle의 경우 127.0.0.1 에서 id: hr password : hr 계정을 사용함. 본�
 
 한번 실행한 이후에는 create를 다시 update로 수정함.
 
+git에서 import를 한 후에 config_backup 폴더안의 .setttings 폴더 .gitignore .project .classpath 를 프로젝트 폴더로 복사한다.
 
+
+mvn clean install
+
+mvn eclipse:clean eclipse:eclipse
+
+maven update
+
+를 수행한다.
 
 
 간단한 방명록.
