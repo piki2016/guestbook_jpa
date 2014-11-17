@@ -15,6 +15,35 @@
 <link href="/css/common.css" rel="stylesheet" media="screen">
 <script src="//code.jquery.com/jquery.js"></script>
 <script src="/js/bootstrap.min.js"></script>
+<script>
+$(document).ready(function(){
+
+	// 삭제 버튼을 클릭할 경우.
+	 $(".deleteGuestbook").click(function(){
+		 // 현재 눌려진 버튼의 seq속성값 구함.
+		 var seq = $(this).attr("seq");
+		 
+	       $.ajax({
+               type : 'POST',                                    // post 타입 전송
+               url: "delete/" + seq,                               // 전송 url
+               // data: { name: "John", age: 50 }   // 전송 파라미터
+               cache : false,                                  // ajax로 페이지를 요청해서 보여줄 경우
+                                                               // cache가 있으면 새로운 내용이 업데이트 되지 않는다.
+               async : true,                                    // 비동기 통신,  false : 동기 통신
+               success : function(msg){                         // 콜백 성공 응답시 실행
+            	   console.log(msg);
+               		if(msg){ // 삭제를 성공하였을 경우.
+               			$("#guestbook_" + seq).remove();
+               		}
+                },
+               error : function(){                              // Ajax 전송 에러 발생시 실행
+                },
+               complete : function(){                       //  success, error 실행 후 최종적으로 실행
+               }
+           });		 
+	 });
+});
+</script>
 </head>
 <body>
 
@@ -75,8 +104,21 @@
 
 	<div class="container">
 		<c:forEach var="guestbook" items="${list }" varStatus="status">
-			<div class="panel panel-primary">
-				<div class="panel-heading">${guestbook.user.name }</div>
+			<div class="panel panel-primary" id="guestbook_${guestbook.id}">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-sm-11 col-sx-12">
+							${guestbook.user.name }
+						</div>
+						<div class="col-sm-1 col-sx-6" >
+							<c:if test="${isAuthenticated}">
+								<c:if test="${authUserId == guestbook.user.id }">
+									<button class="btn btn-default btn-xs deleteGuestbook" seq="${guestbook.id }">삭제</button>
+								</c:if>
+							</c:if>
+						</div>
+					</div>				
+				</div>
 				<div class="panel-body">${guestbook.content }</div>
 				<div class="panel-footer">
 				${guestbook.createdDate }<br>

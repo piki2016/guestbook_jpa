@@ -192,4 +192,15 @@ public class GuestbookController {
 		List<Guestbook> list = guestbookRepository.findAll();
 		return list;
 	}
+	
+	@RequestMapping(value="/delete/{id}", method={RequestMethod.GET,RequestMethod.POST})
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public boolean delete(@PathVariable long id) throws Exception {
+		Guestbook guestbook = guestbookRepository.findOne(id);
+		if(guestbook == null)
+			return false;
+		guestbookRepository.delete(guestbook);
+		return true;
+	}	
 }
