@@ -13,7 +13,7 @@
 <form:form action="write" method="post" enctype="multipart/form-data" modelAttribute="guestbook" >
 이름 : ${authUserName}<br><br>
 <form:textarea path="content" cols="60" rows="6"/><br>
-<form:errors path="content"/>
+<form:errors path="content"/><br>
 <!-- name을 같게 하였다. 배열로 전송된다. -->
 
 <form:input type="file" path="images"/><br>

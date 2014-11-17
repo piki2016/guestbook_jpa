@@ -38,6 +38,8 @@ public class User implements HasCreatedAndUpdatedDate{
     @SequenceGenerator(name = "USER_ID_SEQ", sequenceName = "user_id_seq", allocationSize=1)    
     private Long id;
 
+    @NotBlank
+    @Length(max = 20) 
     @Column(name = "user_id", nullable = false)
     private String userId;
     

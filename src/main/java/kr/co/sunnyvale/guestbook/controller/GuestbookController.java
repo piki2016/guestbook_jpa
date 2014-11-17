@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 import kr.co.sunnyvale.guestbook.domain.Guestbook;
 import kr.co.sunnyvale.guestbook.domain.Image;
@@ -26,6 +27,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -106,7 +108,10 @@ public class GuestbookController {
 
 	@RequestMapping(value="/write", method=RequestMethod.POST)
 	@Transactional
-	public String write(HttpServletRequest request, @AuthUser SecurityLoginInfoDTO loginInfo, @ModelAttribute("guestbook") GuestbookDTO guestbookDTO, Model model) {
+	public String write(HttpServletRequest request, @AuthUser SecurityLoginInfoDTO loginInfo, @ModelAttribute("guestbook") @Valid GuestbookDTO guestbookDTO, BindingResult bindingResult , Model model) {
+		if(bindingResult.hasErrors()){
+			return "guestbook/writeform";
+		}
 		
 		Guestbook guestbook = new Guestbook();
 		guestbook.setContent(guestbookDTO.getContent());
