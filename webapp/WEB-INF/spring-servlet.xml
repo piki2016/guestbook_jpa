@@ -20,6 +20,7 @@
 	<!-- 스프링의 DispatcherServet에게 정적인 자원을 알려준다. -->
 	<mvc:resources location="/images/" mapping="/images/**" />
 	<mvc:resources location="/css/" mapping="/css/**" />
+	<mvc:resources location="/js/" mapping="/js/**" />
 
 
 	<!-- annotation-driven & spring security - Controller에게 @AuthUser어노테이션과 
