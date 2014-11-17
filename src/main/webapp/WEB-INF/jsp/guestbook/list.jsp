@@ -25,12 +25,12 @@ ${authUserName} 님 환영합니다.<br>
 <br>
 <hr>
 <c:forEach var="guestbook" items="${list }" varStatus="status">
-이름 : ${guestbook.name }<br>
+이름 : ${guestbook.user.name }<br>
 내용 : 
 <pre>
 ${guestbook.content }
 </pre>	<br>
-등록일 : ${guestbook.regdate }<br>
+등록일 : ${guestbook.createdDate }<br>
 	<c:forEach var="image" items="${guestbook.images }" varStatus="status2">
 		<img src="/guestbook/download/${image.id}" width="50%" height="50%"><br>
 	</c:forEach>

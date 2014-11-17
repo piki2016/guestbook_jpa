@@ -1,16 +1,27 @@
 package kr.co.sunnyvale.guestbook.domain;
 
-import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EntityListeners;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Pattern;
 
+import kr.co.sunnyvale.commons.support.jpa.CreatedAndUpdatedDateEntityListener;
+import kr.co.sunnyvale.commons.support.jpa.HasCreatedAndUpdatedDate;
 import lombok.extern.slf4j.Slf4j;
 
 import org.hibernate.validator.constraints.Length;
@@ -19,14 +30,15 @@ import org.hibernate.validator.constraints.NotBlank;
 
 @Slf4j	
 @Entity
-@Table(name="GUESTBOOK_USER", uniqueConstraints=@UniqueConstraint(columnNames="userId"))
-public class User{
+@Table(name="GUESTBOOK_USER", uniqueConstraints=@UniqueConstraint(columnNames="user_id"))
+@EntityListeners({ CreatedAndUpdatedDateEntityListener.class })
+public class User implements HasCreatedAndUpdatedDate{
     @Id
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator = "USER_ID_SEQ")
     @SequenceGenerator(name = "USER_ID_SEQ", sequenceName = "user_id_seq", allocationSize=1)    
     private Long id;
-	
 
+    @Column(name = "user_id", nullable = false)
     private String userId;
     
     @NotBlank
@@ -36,17 +48,36 @@ public class User{
     @NotBlank
 	private String passwd;
 
-	private Date regdate;
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_date", nullable = false, updatable = false)
+	private Date createdDate;
+    
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "updated_date", nullable = false)
+	private Date updatedDate;
 	
 	private int admin;
 	
+	@OneToMany(fetch = FetchType.LAZY, cascade ={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "user")
+	List<Guestbook> guestbooks;
+	
 	public User(){
-		setRegdate(new java.sql.Date(System.currentTimeMillis()));
 	}
 	
 	public User(String userId){
 		this();
 		setUserId(userId);
+	}
+	
+	public void addGuestbook(Guestbook guestbook){
+		if(guestbook == null)
+			return;
+		
+		if(guestbooks == null){
+			guestbooks = new ArrayList<Guestbook>();
+		}
+		guestbook.setUser(this);
+		guestbooks.add(guestbook);
 	}
 	
 	//, message="org.hibernate.validator.constraints.Pattern.message"
@@ -71,13 +102,6 @@ public class User{
 		this.passwd = passwd;
 	}
 
-	public Date getRegdate() {
-		return regdate;
-	}
-
-	public void setRegdate(Date regdate) {
-		this.regdate = regdate;
-	}
 
 	public int getAdmin() {
 		return admin;
@@ -110,14 +134,41 @@ public class User{
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
+	
+
+	public List<Guestbook> getGuestbooks() {
+		return guestbooks;
+	}
+
+	public void setGuestbooks(List<Guestbook> guestbooks) {
+		this.guestbooks = guestbooks;
+	}
+	
+	
+
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
+	public Date getUpdatedDate() {
+		return updatedDate;
+	}
+
+	public void setUpdatedDate(Date updatedDate) {
+		this.updatedDate = updatedDate;
+	}
 
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", userId=" + userId + ", name=" + name
-				+ ", passwd=" + passwd + ", regdate=" + regdate + ", admin="
-				+ admin + ", email=" + email + "]";
+				+ ", passwd=" + passwd + ", createdDate=" + createdDate
+				+ ", updatedDate=" + updatedDate + ", admin=" + admin
+				+ ", email=" + email + "]";
 	}
-
 
 	
 }

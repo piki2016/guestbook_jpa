@@ -13,9 +13,11 @@ import kr.co.sunnyvale.guestbook.domain.Guestbook;
 import kr.co.sunnyvale.guestbook.domain.Image;
 import kr.co.sunnyvale.guestbook.domain.QGuestbook;
 import kr.co.sunnyvale.guestbook.domain.QImage;
+import kr.co.sunnyvale.guestbook.domain.User;
 import kr.co.sunnyvale.guestbook.dto.GuestbookDTO;
 import kr.co.sunnyvale.guestbook.repository.GuestbookRepository;
 import kr.co.sunnyvale.guestbook.repository.ImageRepository;
+import kr.co.sunnyvale.guestbook.repository.UserRepository;
 import kr.co.sunnyvale.security.AuthUser;
 import kr.co.sunnyvale.security.SecurityLoginInfoDTO;
 
@@ -41,6 +43,7 @@ public class GuestbookController {
 	private GuestbookRepository guestbookRepository;
 	@Autowired
 	private ImageRepository imageRepository;
+	@Autowired UserRepository userRepository;
 	
 	@RequestMapping(value="/list", method={RequestMethod.GET})
 	public String list(Model model) throws Exception {
@@ -107,8 +110,9 @@ public class GuestbookController {
 		
 		Guestbook guestbook = new Guestbook();
 		guestbook.setContent(guestbookDTO.getContent());
-		guestbook.setName(loginInfo.getName());
 		
+		User user = userRepository.findByUserId(loginInfo.getUserId());
+		guestbook.setUser(user);
 
 		
 		System.out.println("guestbookDTO write : " + guestbookDTO);

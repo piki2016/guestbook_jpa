@@ -48,7 +48,7 @@ public class SecurityMemberService implements UserDetailsService  {
 		user.setId(securityUser.getId());
 		user.setUserId(securityUser.getUserId());
 		user.setName(securityUser.getName());
-		user.setRegdate(securityUser.getRegdate());
+		user.setCreatedDate(securityUser.getCreatedDate());
 		user.setAdmin(securityUser.getAdmin());
 		
 		System.out.println(user);

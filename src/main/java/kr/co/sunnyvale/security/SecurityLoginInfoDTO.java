@@ -1,7 +1,7 @@
 package kr.co.sunnyvale.security;
 
-import java.sql.Date;
 import java.util.Collection;
+import java.util.Date;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -9,7 +9,7 @@ import org.springframework.security.core.userdetails.User;
 public class SecurityLoginInfoDTO extends User {
 	private long id;
 	private String userId;
-	private Date regdate;
+	private Date createdDate;
 	private String name;
 	private int admin;
 	
@@ -45,13 +45,7 @@ public class SecurityLoginInfoDTO extends User {
 		this.userId = userId;
 	}
 
-	public Date getRegdate() {
-		return regdate;
-	}
 
-	public void setRegdate(Date regdate) {
-		this.regdate = regdate;
-	}
 
 	public String getName() {
 		return name;
@@ -69,10 +63,20 @@ public class SecurityLoginInfoDTO extends User {
 		this.admin = admin;
 	}
 
+	public Date getCreatedDate() {
+		return createdDate;
+	}
+
+	public void setCreatedDate(Date createdDate) {
+		this.createdDate = createdDate;
+	}
+
 	@Override
 	public String toString() {
-		return "SecurityLoginInfoDTO [regdate=" + regdate + ", name=" + name
-				+ "]";
+		return "SecurityLoginInfoDTO [id=" + id + ", userId=" + userId
+				+ ", createdDate=" + createdDate + ", name=" + name
+				+ ", admin=" + admin + "]";
 	}
+
 
 }
