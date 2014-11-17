@@ -17,17 +17,19 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import kr.co.sunnyvale.commons.support.jpa.CreatedAndUpdatedDateEntityListener;
-import kr.co.sunnyvale.commons.support.jpa.HasCreatedAndUpdatedDate;
+import kr.co.sunnyvale.support.jpa.CreatedAndUpdatedDateEntityListener;
+import kr.co.sunnyvale.support.jpa.HasCreatedAndUpdatedDate;
 
 import org.hibernate.validator.constraints.NotBlank;
 
 @SuppressWarnings("serial")
 @Entity
 @EntityListeners({ CreatedAndUpdatedDateEntityListener.class })
+@Table(name="GUESTBOOK")
 public class Guestbook implements HasCreatedAndUpdatedDate{
 	
 

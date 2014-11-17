@@ -1,4 +1,4 @@
-package kr.co.sunnyvale.commons.support.jpa;
+package kr.co.sunnyvale.support.jpa;
 import java.util.Date;
 
 public interface HasUpdatedDate {

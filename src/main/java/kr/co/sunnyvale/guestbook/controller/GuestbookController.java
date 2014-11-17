@@ -8,7 +8,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kr.co.sunnyvale.commons.util.CalendarUtil;
 import kr.co.sunnyvale.guestbook.domain.Guestbook;
 import kr.co.sunnyvale.guestbook.domain.Image;
 import kr.co.sunnyvale.guestbook.domain.QGuestbook;
@@ -20,6 +19,7 @@ import kr.co.sunnyvale.guestbook.repository.ImageRepository;
 import kr.co.sunnyvale.guestbook.repository.UserRepository;
 import kr.co.sunnyvale.security.AuthUser;
 import kr.co.sunnyvale.security.SecurityLoginInfoDTO;
+import kr.co.sunnyvale.support.util.CalendarUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

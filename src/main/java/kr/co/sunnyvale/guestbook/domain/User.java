@@ -20,8 +20,8 @@ import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Pattern;
 
-import kr.co.sunnyvale.commons.support.jpa.CreatedAndUpdatedDateEntityListener;
-import kr.co.sunnyvale.commons.support.jpa.HasCreatedAndUpdatedDate;
+import kr.co.sunnyvale.support.jpa.CreatedAndUpdatedDateEntityListener;
+import kr.co.sunnyvale.support.jpa.HasCreatedAndUpdatedDate;
 import lombok.extern.slf4j.Slf4j;
 
 import org.hibernate.validator.constraints.Length;

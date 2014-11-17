@@ -1,4 +1,4 @@
-package kr.co.sunnyvale.commons.util;
+package kr.co.sunnyvale.support.util;
 
 import java.util.Calendar;
 

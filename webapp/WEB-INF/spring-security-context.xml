@@ -9,9 +9,8 @@
  
  
     <security:http auto-config="true" >
-    	<!-- 
-    	<security:access-denied-handler error-page="/403" />
-    	 -->
+    	<security:access-denied-handler error-page="/500" />
+
     	 
     	<!-- 필터링 규칙은 반드시 좁은 쪽에서 넓은쪽으로 설정해야 한다. -->
     	<!-- IS_AUTHENTICATED_ANONYMOUSLY 는 예약어로 인증되지 않은 사용자를 말한다. -->
@@ -43,7 +42,7 @@
     </security:http>    
     
     <!-- 로그인 성공시 핸들러  -->
-    <bean id="loginSuccessHandler" class="kr.co.sunnyvale.commons.util.LoginSuccessHandler"/>
+    <bean id="loginSuccessHandler" class="kr.co.sunnyvale.support.controller.LoginSuccessHandler"/>
    
    <!-- 암호화. --> 
    <bean id="bcryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder" />
