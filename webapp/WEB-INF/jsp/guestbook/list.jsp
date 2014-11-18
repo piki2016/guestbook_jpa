@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="/WEB-INF/jsp/common/header.jsp"%>
-
+<%@taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -15,10 +15,81 @@
 <link href="/css/common.css" rel="stylesheet" media="screen">
 <script src="//code.jquery.com/jquery.js"></script>
 <script src="/js/bootstrap.min.js"></script>
-
+<!-- include summernote css/js-->
+<link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+<link href="/css/summernote.css" rel="stylesheet">
+<link href="/css/summernote-bs3.css" rel="stylesheet">
+<script src="/js/summernote.min.js"></script>
 <script>
 	$(document).ready(function() {
+		var scrollHeight = 0;
+		$('#summernote').summernote({
+            height: 200,                 // set editor height
+            minHeight: false,             // set minimum height of editor
+            maxHeight: false,             // set maximum height of editor
+            focus: true,                 // set focus to editable area after initializing summernote
+            oninit: function() {
+            	
+            	var ned = $('div.note-editor');
+            	var ne = $('div.note-editable');
+            	//ned.css("overflow","auto");
+            	
+            	//ned.css("height", 300);
+            	//ne.css("height", 300);
+                scrollHeight = $(this).prop("scrollHeight");
+              },            
+            onenter: function(e) {
+            	console.log('enter : ', e.keyCode, $(this).prop("scrollHeight"));
+            },
+            onkeydown: function(e) {
+            	if(e.keyCode == 13){
+            		var ned = $('div.note-editor');
+            		var scrollHeight2 =  ned.prop("scrollHeight");
+            		if(scrollHeight < scrollHeight2){
+            		
+            			ned.scrollTop(ned.prop("scrollHeight") );
+            			scrollHeight = scrollHeight2;
+            		}
+            		
+            		
+            	}
+//              	  	$(this).animate({ scrollTop: $(this).prop("scrollHeight") }, 300);
+              },
+            onImageUpload: function(files, editor, $editable) {
+            	 sendFile(files[0], editor, $editable);
+              },
+			toolbar: [
+			    //[groupname, [button list]]
+			     
+			    ['style', ['bold', 'italic', 'underline', 'clear']],
+			    ['font', ['strikethrough']],
+			    ['fontsize', ['fontsize']],
+			    ['color', ['color']],
+			    ['para', ['ul', 'ol', 'paragraph']],
+			    ['height', ['height']],
+			    ['insert', ['picture','link','video']],
+			  ]
+			});
 
+        function sendFile(file, editor, welEditable) {
+            data = new FormData();
+            data.append("file", file);
+            $.ajax({
+                data: data,
+                type: "POST",
+                url: "/guestbook/upload",
+                cache: false,
+                contentType: false,
+                processData: false,
+                success: function(uploadFileId) {
+                	var lastIndex = uploadFileId.lastIndexOf("/");
+                	var imageId = uploadFileId.substring(lastIndex+1);
+                	console.log("imageId", imageId);
+                    editor.insertImage(welEditable, uploadFileId);
+                }
+            });
+        }
+		
 		// 삭제 버튼을 클릭할 경우.
 		$(".deleteGuestbook").click(function() {
 			// 현재 눌려진 버튼의 seq속성값 구함.
@@ -88,22 +159,30 @@
 		</div>
 	</nav>
 
+	<!-- 글쓰기 창. -->
+	<script>
+	$(document).ready(function() {
+		$("#writeBtn").click(function(){
+			$("#guestbookListContainer").first().before("hello");
+		});
+	});
+	</script>
 	<div class="container">
-
-		<!-- Main component for a primary marketing message or call to action -->
-		<div class="jumbotron">
-			<h1>방명록</h1>
-			<p>방명록을 남겨주세요.</p>
-			<p>
-				<a class="btn btn-lg btn-primary" href="/guestbook/write"
-					role="button">방명록 글쓰기 &raquo;</a>
-			</p>
-		</div>
-
+		<form:form action="write" method="post" enctype="multipart/form-data" modelAttribute="guestbook" >
+		 <textarea id="summernote"></textarea>
+		 <div class="row">
+		 	<div class="col-md-1 col-sm-1"><form:errors path="content"/></div>
+		 </div>
+		 <div class="row">
+		 	<div class="col-sm-offset-10 col-sx-12">
+		 		<button id="writeBtn" type="button" class="btn btn-primary btn-sm">저장하기</button>
+		 	</div>
+		 </div>
+		</form:form>
 	</div>
 	<!-- /container -->
 
-	<div class="container">
+	<div class="container" id="guestbookListContainer">
 		<c:forEach var="guestbook" items="${pageData.content }"
 			varStatus="status">
 			<div class="panel panel-primary" id="guestbook_${guestbook.id}">
@@ -123,12 +202,14 @@
 				<div class="panel-body">${guestbook.content }</div>
 				<div class="panel-footer">
 					${guestbook.createdDate }<br>
+					<%--
 					<c:forEach var="image" items="${guestbook.images }"
 						varStatus="status2">
 						<img src="/guestbook/download/${image.id}" width="350"
 							height="350">
 						<br>
 					</c:forEach>
+					 --%>
 				</div>
 			</div>
 		</c:forEach>

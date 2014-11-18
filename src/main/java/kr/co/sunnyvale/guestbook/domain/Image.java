@@ -57,8 +57,8 @@ public class Image implements HasCreatedAndUpdatedDate{
 	private Date updatedDate;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="guestbook_id", nullable=false)
-	private Guestbook guestbook;
+    @JoinColumn(name="user_id", nullable=false)
+	private User user;
 
 	public Image(){
 
@@ -74,16 +74,19 @@ public class Image implements HasCreatedAndUpdatedDate{
 	}
 
 
-	public Image(Guestbook guestbook){
-		setGuestbook(guestbook);		
+	public Image(User user){
+		setUser(user);		
 	}
 
-	public Guestbook getGuestbook() {
-		return guestbook;
+
+	public User getUser() {
+		return user;
 	}
-	public void setGuestbook(Guestbook guestbook) {
-		this.guestbook = guestbook;
+
+	public void setUser(User user) {
+		this.user = user;
 	}
+
 	public String getFileName() {
 		return fileName;
 	}

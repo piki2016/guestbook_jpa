@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.transaction.TransactionConfiguration;
@@ -29,6 +30,8 @@ public class GeustbookDAOTest {
 	UserRepository userRepository;
 	@Autowired
 	GuestbookRepository guestbookRepository;
+	@Autowired
+	BCryptPasswordEncoder passwordEncoder;
 	
 	@Test
 	@Transactional
@@ -38,7 +41,7 @@ public class GeustbookDAOTest {
 		user.setAdmin(1);
 		user.setEmail("urstory@gmail.com");
 		user.setName("김성박");
-		user.setPasswd("1234");
+		user.setPasswd(passwordEncoder.encode("1234"));
 		//user.setRegdate(new Date(System.currentTimeMillis()));
 		userRepository.save(user);
 	}
@@ -52,7 +55,7 @@ public class GeustbookDAOTest {
 			user.setAdmin(1);
 			user.setEmail("urstory@gmail.com");
 			user.setName("김성박");
-			user.setPasswd("1234");
+			user.setPasswd(passwordEncoder.encode("1234"));
 			//user.setRegdate(new Date(System.currentTimeMillis()));
 			userRepository.save(user);			
 		}

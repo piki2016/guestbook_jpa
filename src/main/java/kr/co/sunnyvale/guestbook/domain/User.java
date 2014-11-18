@@ -62,6 +62,9 @@ public class User implements HasCreatedAndUpdatedDate{
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade ={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "user")
 	List<Guestbook> guestbooks;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade ={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "user")
+	List<Image> images;
 	
 	public User(){
 	}
@@ -70,6 +73,16 @@ public class User implements HasCreatedAndUpdatedDate{
 		this();
 		setUserId(userId);
 	}
+	
+	public void addImage(Image image) {
+		if(image == null)
+			return;
+		if(images == null){
+			images = new ArrayList<Image>();
+		}
+		images.add(image);
+		image.setUser(this);
+	}		
 	
 	public void addGuestbook(Guestbook guestbook){
 		if(guestbook == null)

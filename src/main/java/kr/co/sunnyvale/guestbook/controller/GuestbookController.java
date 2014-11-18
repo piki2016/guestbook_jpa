@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -188,8 +189,6 @@ public class GuestbookController {
 					image.setSaveFileName(saveFileName);
 					
 					System.out.println("image :" + image);
-					guestbook.addImage(image);
-				
 				}
 			}
 			guestbook = guestbookRepository.save(guestbook);
@@ -200,6 +199,59 @@ public class GuestbookController {
 		
 		return "redirect:/guestbook/list";
 	}
+	
+	@RequestMapping(value="/upload", method=RequestMethod.POST)
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody
+	public String upload(HttpServletRequest request, @AuthUser SecurityLoginInfoDTO loginInfo, @RequestParam("file") MultipartFile imageFile, Model model) {
+		User user = userRepository.findByUserId(loginInfo.getUserId());
+		Image image = new Image();
+		image.setUser(user);
+		
+		String saveDir = CalendarUtil.getTodayYyyyMmDd(); //   /2014/11/13 문자열 구함.
+		// eclipse에서 실행할 경우엔 디플로이되는 경로가 자주 지위지니 특정 폴더를 사용한다.
+		//String realPath  = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
+		String realPath = "c:/temp";
+		String separator = File.separator; // windows : \      mac, linux, unix : /
+		
+		if("\\".equals(separator)){
+			saveDir = saveDir.replace("/", "\\");
+			//System.out.println(prefix);
+		}
+			
+		saveDir = realPath + saveDir + separator;
+		File saveDirFile = new File(saveDir);
+		if(!saveDirFile.exists()){ // 디렉토리가 존재하지 않는다면.
+			saveDirFile.mkdirs(); // 디렉토리를 생성한다.
+		}
+
+		System.out.println(imageFile.getOriginalFilename());
+		System.out.println(imageFile.getName());
+		System.out.println(imageFile.getContentType());
+		System.out.println(imageFile.getSize());
+		System.out.println("-------------------------------------------------");
+				
+		// 파일이 존재할 경우
+		String saveRealPath = "";
+		if(imageFile.getOriginalFilename() != null && !"".equals(imageFile.getOriginalFilename())){
+			image.setContentType(imageFile.getContentType());
+			image.setFileLength(imageFile.getSize());
+			image.setFileName(imageFile.getName());
+			
+			String saveFileName = imageFile.getOriginalFilename() + "_" + System.nanoTime() + "_" + Thread.currentThread().getId();
+			saveRealPath = saveDir + saveFileName;
+			image.setRealPath(saveRealPath);
+			image.setSaveFileName(saveFileName);
+			try {
+				imageFile.transferTo(new File(saveRealPath));
+			} catch (Exception e) {
+				throw new RuntimeException("file save error : " + saveFileName + " : " + e);
+			}
+			System.out.println("image :" + saveRealPath);
+		}
+		image = imageRepository.save(image);
+		return "/guestbook/download/" + image.getId();
+	}	
 
 	@RequestMapping(value="/list.api", method={RequestMethod.GET})
 	@ResponseStatus(HttpStatus.OK)
