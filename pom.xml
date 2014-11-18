@@ -297,6 +297,7 @@
 		</dependency>
 
 		<!-- Servlet -->
+		<!-- 
 		<dependency>
 			<groupId>org.apache.tomcat</groupId>
 			<artifactId>tomcat-servlet-api</artifactId>
@@ -309,6 +310,7 @@
 			<version>2.1</version>
 			<scope>provided</scope>
 		</dependency>
+		 -->
 		<dependency>
 			<groupId>taglibs</groupId>
 			<artifactId>standard</artifactId>
@@ -392,7 +394,15 @@
 			<groupId>com.oracle</groupId>
 			<artifactId>ojdbc14</artifactId>
 			<version>10.2.0</version>
-		</dependency>				
+		</dependency>		
+		
+		<!-- springloaded -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>springloaded</artifactId>
+			<version>1.2.1.RELEASE</version>
+		</dependency>
+				
 	</dependencies>
 	
 	<build>

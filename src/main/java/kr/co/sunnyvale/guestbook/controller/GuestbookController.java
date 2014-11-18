@@ -11,18 +11,19 @@ import javax.validation.Valid;
 
 import kr.co.sunnyvale.guestbook.domain.Guestbook;
 import kr.co.sunnyvale.guestbook.domain.Image;
-import kr.co.sunnyvale.guestbook.domain.QGuestbook;
 import kr.co.sunnyvale.guestbook.domain.QImage;
 import kr.co.sunnyvale.guestbook.domain.User;
 import kr.co.sunnyvale.guestbook.dto.GuestbookDTO;
 import kr.co.sunnyvale.guestbook.repository.GuestbookRepository;
 import kr.co.sunnyvale.guestbook.repository.ImageRepository;
 import kr.co.sunnyvale.guestbook.repository.UserRepository;
+import kr.co.sunnyvale.guestbook.service.GuestbookService;
 import kr.co.sunnyvale.security.AuthUser;
 import kr.co.sunnyvale.security.SecurityLoginInfoDTO;
 import kr.co.sunnyvale.support.util.CalendarUtil;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,19 +41,35 @@ import org.springframework.web.multipart.MultipartFile;
 @RequestMapping("/guestbook")
 @Transactional
 public class GuestbookController {
-	
+	@Autowired GuestbookService guestbookService;
 	@Autowired
 	private GuestbookRepository guestbookRepository;
 	@Autowired
 	private ImageRepository imageRepository;
 	@Autowired UserRepository userRepository;
 	
+	
 	@RequestMapping(value="/list", method={RequestMethod.GET})
-	public String list(Model model) throws Exception {
-		QGuestbook qm = QGuestbook.guestbook;
-		Iterable<Guestbook> list = guestbookRepository.findAll(null, qm.id.desc());
-		model.addAttribute("list", list);
+	public String defaultlist(Model model) throws Exception {
+		return "forward:list/1";
+		
+	}
+	
+	@RequestMapping(value="/list/{pageNumber}", method={RequestMethod.GET})
+	public String list(@PathVariable("pageNumber")int pageNumber, Model model) throws Exception {
+		
+		// 페이징 처리. 
+		// http://springinpractice.com/2012/05/11/pagination-and-sorting-with-spring-data-jpa
+		Page<Guestbook> page = guestbookService.getGuestbookList(pageNumber);
 
+	    int current = page.getNumber() + 1;
+	    int begin = Math.max(1, current - 5);
+	    int end = Math.min(begin + 10 -1, page.getTotalPages());
+
+	    model.addAttribute("pageData", page);
+	    model.addAttribute("beginIndex", begin);
+	    model.addAttribute("endIndex", end);
+	    model.addAttribute("currentIndex", current);
 		return "guestbook/list";
 		
 	}
