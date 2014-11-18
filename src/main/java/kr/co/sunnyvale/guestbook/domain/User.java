@@ -27,6 +27,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Slf4j	
 @Entity
@@ -48,6 +50,7 @@ public class User implements HasCreatedAndUpdatedDate{
 	private String name;
 
     @NotBlank
+    @JsonIgnore
 	private String passwd;
 
     @Temporal(TemporalType.TIMESTAMP)
@@ -61,9 +64,11 @@ public class User implements HasCreatedAndUpdatedDate{
 	private int admin;
 	
 	@OneToMany(fetch = FetchType.LAZY, cascade ={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "user")
+	@JsonIgnore
 	List<Guestbook> guestbooks;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade ={CascadeType.PERSIST, CascadeType.REMOVE}, mappedBy = "user")
+	@JsonIgnore
 	List<Image> images;
 	
 	public User(){

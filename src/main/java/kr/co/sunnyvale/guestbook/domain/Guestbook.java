@@ -1,10 +1,7 @@
 package kr.co.sunnyvale.guestbook.domain;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -15,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -26,10 +22,14 @@ import kr.co.sunnyvale.support.jpa.HasCreatedAndUpdatedDate;
 
 import org.hibernate.validator.constraints.NotBlank;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 @SuppressWarnings("serial")
 @Entity
 @EntityListeners({ CreatedAndUpdatedDateEntityListener.class })
 @Table(name = "GUESTBOOK")
+//@JsonAutoDetect //http://stackoverflow.com/questions/4362104/strange-jackson-exception-being-thrown-when-serializing-hibernate-object
+//@JsonIgnoreProperties({"user"})
 public class Guestbook implements HasCreatedAndUpdatedDate {
 
 	@Id

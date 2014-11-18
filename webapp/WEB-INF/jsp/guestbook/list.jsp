@@ -20,41 +20,20 @@
 <link href="/css/summernote.css" rel="stylesheet">
 <link href="/css/summernote-bs3.css" rel="stylesheet">
 <script src="/js/summernote.min.js"></script>
+<script src="/js/ejs.js"></script>
 <script>
 	$(document).ready(function() {
-		var scrollHeight = 0;
 		$('#summernote').summernote({
             height: 200,                 // set editor height
-            minHeight: false,             // set minimum height of editor
-            maxHeight: false,             // set maximum height of editor
+            minHeight: 200,             // set minimum height of editor
+            maxHeight: 500,             // set maximum height of editor
             focus: true,                 // set focus to editable area after initializing summernote
             oninit: function() {
-            	
-            	var ned = $('div.note-editor');
-            	var ne = $('div.note-editable');
-            	//ned.css("overflow","auto");
-            	
-            	//ned.css("height", 300);
-            	//ne.css("height", 300);
-                scrollHeight = $(this).prop("scrollHeight");
+               // $(this).css("overflow", "auto");         
               },            
             onenter: function(e) {
-            	console.log('enter : ', e.keyCode, $(this).prop("scrollHeight"));
+          		console.log('hello');  	
             },
-            onkeydown: function(e) {
-            	if(e.keyCode == 13){
-            		var ned = $('div.note-editor');
-            		var scrollHeight2 =  ned.prop("scrollHeight");
-            		if(scrollHeight < scrollHeight2){
-            		
-            			ned.scrollTop(ned.prop("scrollHeight") );
-            			scrollHeight = scrollHeight2;
-            		}
-            		
-            		
-            	}
-//              	  	$(this).animate({ scrollTop: $(this).prop("scrollHeight") }, 300);
-              },
             onImageUpload: function(files, editor, $editable) {
             	 sendFile(files[0], editor, $editable);
               },
@@ -67,7 +46,7 @@
 			    ['color', ['color']],
 			    ['para', ['ul', 'ol', 'paragraph']],
 			    ['height', ['height']],
-			    ['insert', ['picture','link','video']],
+			    ['insert', ['picture','link','video','hr']],
 			  ]
 			});
 
@@ -89,9 +68,10 @@
                 }
             });
         }
+        
 		
-		// 삭제 버튼을 클릭할 경우.
-		$(".deleteGuestbook").click(function() {
+
+		deleteGuestbooFunction = function() {
 			// 현재 눌려진 버튼의 seq속성값 구함.
 			var seq = $(this).attr("seq");
 
@@ -113,7 +93,11 @@
 				complete : function() { //  success, error 실행 후 최종적으로 실행
 				}
 			});
-		});
+		}
+		
+		// 삭제 버튼을 클릭할 경우.
+		$(".deleteGuestbook").click(deleteGuestbooFunction);
+		
 	});
 </script>
 </head>
@@ -163,18 +147,40 @@
 	<script>
 	$(document).ready(function() {
 		$("#writeBtn").click(function(){
-			$("#guestbookListContainer").first().before("hello");
+			$.ajax({
+				type : 'POST', // post 타입 전송
+				data : {content : $('#summernote').code()},
+				url : "/guestbook/write", // 전송 url
+				cache : false, // ajax로 페이지를 요청해서 보여줄 경우
+				// cache가 있으면 새로운 내용이 업데이트 되지 않는다.
+				async : true, // 비동기 통신,  false : 동기 통신
+				success : function(guestbook) { // 콜백 성공 응답시 실행
+					if (guestbook.id > 0) { // 삭제를 성공하였을 경우.
+						var htmlData = new EJS({url: '/templates/guestbook.ejs'}).render(guestbook);
+						var html = $(htmlData);
+						html.find(".deleteGuestbook").click(deleteGuestbooFunction);
+						$("#guestbookListContainer").first().prepend(html);
+						$('#summernote').code("");
+					}
+				},
+				error : function() { // Ajax 전송 에러 발생시 실행
+				},
+				complete : function() { //  success, error 실행 후 최종적으로 실행
+				}
+			});
+			
+
 		});
 	});
 	</script>
 	<div class="container">
 		<form:form action="write" method="post" enctype="multipart/form-data" modelAttribute="guestbook" >
-		 <textarea id="summernote"></textarea>
+		 <div id="summernote"></div>
 		 <div class="row">
 		 	<div class="col-md-1 col-sm-1"><form:errors path="content"/></div>
 		 </div>
 		 <div class="row">
-		 	<div class="col-sm-offset-10 col-sx-12">
+		 	<div class="col-xs-offset-7 col-sm-2 col-sm-offset-10">
 		 		<button id="writeBtn" type="button" class="btn btn-primary btn-sm">저장하기</button>
 		 	</div>
 		 </div>
@@ -188,8 +194,8 @@
 			<div class="panel panel-primary" id="guestbook_${guestbook.id}">
 				<div class="panel-heading">
 					<div class="row">
-						<div class="col-sm-11 col-sx-12">${guestbook.user.name }</div>
-						<div class="col-sm-1 col-sx-6">
+						<div class="col-sx-6 col-sm-11">${guestbook.user.name }</div>
+						<div class="col-sx-6 col-sm-1 ">
 							<c:if test="${isAuthenticated}">
 								<c:if test="${authUserId == guestbook.user.id }">
 									<button class="btn btn-default btn-xs deleteGuestbook"
@@ -217,7 +223,7 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-md-2 col-sm-offset-2">
+			<div class="col-xs-12 col-sm-8 col-sm-offset-3 ">
 				<c:url var="firstUrl" value="/guestbook/list/1" />
 				<c:url var="lastUrl" value="/guestbook/list/${pageData.totalPages}" />
 				<c:url var="prevUrl" value="/guestbook/list/${currentIndex - 1}" />
@@ -262,7 +268,7 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-md-2 col-sm-offset-5">
+			<div class="col-xs-12 col-xs-offset-2 col-sm-4 col-sm-offset-5">
 				<footer>
 					<p>&copy; Company 2014</p>
 				</footer>
@@ -272,3 +278,6 @@
 
 </body>
 </html>
+
+
+

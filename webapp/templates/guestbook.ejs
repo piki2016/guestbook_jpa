@@ -1,0 +1,21 @@
+			<div class="panel panel-primary" id="guestbook_<%=id%>">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-sx-6 col-sm-11"><%=user.name%></div>
+						<div class="col-sx-6 col-sm-1 ">
+							
+								
+									<button class="btn btn-default btn-xs deleteGuestbook"
+										seq="<%=id%>">삭제</button>
+								
+							
+						</div>
+					</div>
+				</div>
+				<div class="panel-body"><%=content%></div>
+				<div class="panel-footer">
+					<%=new Date(createdDate).getFullYear()%>/<%=new Date(createdDate).getMonth()+1%>/<%=new Date(createdDate).getDate()%>
+					<%=new Date(createdDate).getHours()%>:<%=new Date(createdDate).getMinutes()%>:<%=new Date(createdDate).getSeconds()%>:<%=new Date(createdDate).getUTCMilliseconds()%><br>
+					
+				</div>
+			</div>

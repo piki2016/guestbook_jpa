@@ -28,6 +28,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.util.Assert;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -118,91 +119,11 @@ public class GuestbookController {
 		
 	}	
 
-	@RequestMapping(value="/write", method=RequestMethod.GET)
-	public String write(@ModelAttribute("guestbook") GuestbookDTO guestbook, @AuthUser SecurityLoginInfoDTO loginInfo, Model model) throws Exception {
-		return "guestbook/writeform";
-	}
-
-
-	@RequestMapping(value="/write", method=RequestMethod.POST)
-	@Transactional
-	public String write(HttpServletRequest request, @AuthUser SecurityLoginInfoDTO loginInfo, @ModelAttribute("guestbook") @Valid GuestbookDTO guestbookDTO, BindingResult bindingResult , Model model) {
-		if(bindingResult.hasErrors()){
-			return "guestbook/writeform";
-		}
-		
-		Guestbook guestbook = new Guestbook();
-		guestbook.setContent(guestbookDTO.getContent());
-		
-		User user = userRepository.findByUserId(loginInfo.getUserId());
-		guestbook.setUser(user);
-
-		
-		System.out.println("guestbookDTO write : " + guestbookDTO);
-
-		// 업로드를 하든 안하든 3번 반복함
-		MultipartFile images[] = guestbookDTO.getImages();
-		if(images.length > 0){
-			String saveDir = CalendarUtil.getTodayYyyyMmDd(); //   /2014/11/13 문자열 구함.
-			// eclipse에서 실행할 경우엔 디플로이되는 경로가 자주 지위지니 특정 폴더를 사용한다.
-			//String realPath  = request.getSession().getServletContext().getRealPath("/WEB-INF/upload");
-			String realPath = "c:/temp";
-			String separator = File.separator; // windows : \      mac, linux, unix : /
-			
-			if("\\".equals(separator)){
-				saveDir = saveDir.replace("/", "\\");
-				//System.out.println(prefix);
-			}
-			
-			saveDir = realPath + saveDir + separator;
-			File saveDirFile = new File(saveDir);
-			if(!saveDirFile.exists()){ // 디렉토리가 존재하지 않는다면.
-				saveDirFile.mkdirs(); // 디렉토리를 생성한다.
-			}
-			
-			System.out.println("-------------------------------------------------");
-			//System.out.println("realPath : " + saveDir);
-			for(int i = 0; i < images.length; i++){
-
-				MultipartFile mf = images[i];
-				System.out.println(mf.getOriginalFilename());
-				System.out.println(mf.getName());
-				System.out.println(mf.getContentType());
-				System.out.println(mf.getSize());
-				System.out.println("-------------------------------------------------");
-				
-				// 파일이 존재할 경우
-				if(mf.getOriginalFilename() != null && !"".equals(mf.getOriginalFilename())){
-					Image image = new Image();
-					image.setFileLength(mf.getSize());
-					image.setFileName(mf.getOriginalFilename());
-					String saveFileName = mf.getOriginalFilename() + "_" + System.nanoTime() + "_" + Thread.currentThread().getId();
-					String saveRealPath = saveDir + saveFileName;
-					try {
-						mf.transferTo(new File(saveRealPath));
-					} catch (Exception e) {
-						throw new RuntimeException("file save error : " + saveFileName + " : " + e);
-					}
-					image.setContentType(mf.getContentType());
-					image.setRealPath(saveRealPath);
-					System.out.println("saveRealPath : " + saveRealPath);
-					image.setSaveFileName(saveFileName);
-					
-					System.out.println("image :" + image);
-				}
-			}
-			guestbook = guestbookRepository.save(guestbook);
-//			Transaction test			
-//			if(0 == 0)
-//				throw new RuntimeException("ex!!");			
-		}
-		
-		return "redirect:/guestbook/list";
-	}
 	
 	@RequestMapping(value="/upload", method=RequestMethod.POST)
 	@ResponseStatus(HttpStatus.OK)
 	@ResponseBody
+	@Transactional
 	public String upload(HttpServletRequest request, @AuthUser SecurityLoginInfoDTO loginInfo, @RequestParam("file") MultipartFile imageFile, Model model) {
 		User user = userRepository.findByUserId(loginInfo.getUserId());
 		Image image = new Image();
@@ -271,5 +192,29 @@ public class GuestbookController {
 			return false;
 		guestbookRepository.delete(guestbook);
 		return true;
+	}	
+	
+
+	@RequestMapping(value="/write", method=RequestMethod.POST)
+	@Transactional
+	@ResponseStatus(HttpStatus.OK)
+	@ResponseBody	
+	public Guestbook write(HttpServletRequest request, @AuthUser SecurityLoginInfoDTO loginInfo, @ModelAttribute("guestbook") GuestbookDTO guestbookDTO) {
+		//Assert.isNull(guestbookDTO);
+		System.out.println("guestbookDTO : " + guestbookDTO);
+		
+		Guestbook guestbook = new Guestbook();
+		guestbook.setContent(guestbookDTO.getContent());
+		
+		User user = userRepository.findByUserId(loginInfo.getUserId());
+		guestbook.setUser(user);
+
+		
+		System.out.println("guestbookDTO write : " + guestbookDTO);
+
+		guestbook = guestbookRepository.save(guestbook);
+
+		
+		return guestbook;
 	}	
 }
