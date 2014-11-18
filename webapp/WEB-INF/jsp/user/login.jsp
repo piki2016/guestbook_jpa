@@ -22,6 +22,7 @@
 <body>
 <form name="frm" action="/j_spring_security_check" method="post">
 <table>
+<tr><td colspan="2">${message}</td></tr>
 <tr>
 	<td> 아이디</td>
 	<td> <input type="text" name="j_username"> </td>
@@ -37,6 +38,7 @@
 <tr>
 	<td colspan="2" align="center"><input type="button" value="로그인" onclick="doLogin()"></td>
 </tr>
+
 </table>
 </form>
 

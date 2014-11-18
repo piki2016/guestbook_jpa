@@ -11,6 +11,10 @@
     <security:http auto-config="true" >
     	<security:access-denied-handler error-page="/500" />
 
+        <security:session-management invalid-session-url="/user/login">
+            <security:concurrency-control max-sessions="1" expired-url="/user/login" />
+        </security:session-management>
+ 
     	 
     	<!-- 필터링 규칙은 반드시 좁은 쪽에서 넓은쪽으로 설정해야 한다. -->
     	<!-- IS_AUTHENTICATED_ANONYMOUSLY 는 예약어로 인증되지 않은 사용자를 말한다. -->
@@ -29,7 +33,7 @@
         	path를 제공해준다.
          -->
     	<security:form-login login-page="/user/login" authentication-success-handler-ref="loginSuccessHandler" 
-			authentication-failure-url="/user/loginfail" />
+			authentication-failure-url="/user/login?authfailed" />
 	    <!-- 로그아웃을 할경우 자동으로 이동하는 경로이다. spring security를 사용할 경우 로그아웃 url은 사용자가 만들지 않아도 된다.
 	    	/j_spring_security_logout 경로를 요청하면 로그아웃된다.
 	     -->		
