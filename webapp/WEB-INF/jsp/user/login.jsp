@@ -116,7 +116,7 @@
 		<div class="row">
 			<div class="col-xs-12 col-xs-offset-2 col-sm-4 col-sm-offset-5">
 				<footer>
-					<p>&copy; Company 2014</p>
+					<p>&copy; Sunnyvale co., ltd. 2014</p>
 				</footer>
 			</div>
 		</div>
