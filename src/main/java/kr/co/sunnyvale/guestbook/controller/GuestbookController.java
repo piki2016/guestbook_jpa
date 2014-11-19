@@ -49,7 +49,12 @@ public class GuestbookController {
 	@Autowired
 	private ImageRepository imageRepository;
 	@Autowired UserRepository userRepository;
-	
+
+	@RequestMapping(value="/about", method={RequestMethod.GET})
+	public String about(Model model) throws Exception {
+		return "guestbook/about";
+		
+	}
 	
 	@RequestMapping(value="/list", method={RequestMethod.GET})
 	public String defaultlist(Model model) throws Exception {

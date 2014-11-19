@@ -115,11 +115,11 @@
 						class="icon-bar"></span> <span class="icon-bar"></span> <span
 						class="icon-bar"></span>
 				</button>
-				<a class="navbar-brand" href="#">방명록</a>
+				<a class="navbar-brand" href="/">방명록</a>
 			</div>
 			<div id="navbar" class="navbar-collapse collapse">
 				<ul class="nav navbar-nav">
-					<li><a href="#about">About</a></li>
+					<li><a href="/guestbook/about">About</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 					<c:if test="${!isAuthenticated}">
@@ -223,7 +223,7 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-xs-12 col-sm-8 col-sm-offset-3 ">
+			<div class="col-xs-12 col-sm-10 col-sm-offset-2 ">
 				<c:url var="firstUrl" value="/guestbook/list/1" />
 				<c:url var="lastUrl" value="/guestbook/list/${pageData.totalPages}" />
 				<c:url var="prevUrl" value="/guestbook/list/${currentIndex - 1}" />
