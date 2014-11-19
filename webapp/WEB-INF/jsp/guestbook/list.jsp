@@ -223,7 +223,7 @@
 
 	<div class="container">
 		<div class="row">
-			<div class="col-xs-12 col-sm-10 col-sm-offset-2 ">
+			<div class="col-xs-12 col-sm-10 col-sm-offset-2 col-lg-8 col-lg-offset-4">
 				<c:url var="firstUrl" value="/guestbook/list/1" />
 				<c:url var="lastUrl" value="/guestbook/list/${pageData.totalPages}" />
 				<c:url var="prevUrl" value="/guestbook/list/${currentIndex - 1}" />
